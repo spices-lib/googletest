@@ -1,7 +1,7 @@
 project "googlemock"
 	kind "StaticLib"
 	language "C++"
-	cppdialect "C++17"
+	cppdialect "C++20"
 	staticruntime "On"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
@@ -10,9 +10,9 @@ project "googlemock"
 	files
 	{
 		"googlemock/include/gmock/**.h",
-    	"googlemock/src/**.cc",
+    	"googlemock/src/gmock-all.cc",
 		"googletest/include/gtest/**.h",
-    	"googletest/src/**.cc",
+    	"googletest/src/gtest-all.cc",
 	}
 
 	includedirs
@@ -23,9 +23,22 @@ project "googlemock"
 		"googletest"
 	}
 
+	defines
+	{
+		"GTEST_HAS_PTHREAD=1"
+	}
+
 	filter "system:windows"
 		systemversion "latest"
-		
+
+	filter "system:emscripten"
+		buildoptions
+		{
+			"-pthread",
+			"-matomics",
+			"-mbulk-memory",
+		}
+
 	filter "configurations:Debug"
 		runtime "Debug"
 		symbols "On"
