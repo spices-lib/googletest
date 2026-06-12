@@ -23,15 +23,15 @@ project "googlemock"
 		"googletest"
 	}
 
-	defines
-	{
-		"GTEST_HAS_PTHREAD=1"
-	}
-
 	filter "system:windows"
 		systemversion "latest"
 
 	filter "system:emscripten"
+		defines
+		{
+			"GTEST_HAS_PTHREAD=1"
+		}
+
 		buildoptions
 		{
 			"-pthread",
